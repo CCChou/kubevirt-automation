@@ -24,6 +24,8 @@ spec:
     targetRevision: ${pin} # For Helm, this refers to the chart version.
     path: projects # This has no meaning for Helm charts pulled directly from a Helm repo instead of git.
 
+    directory:
+      recurse: true
   # Destination cluster and namespace to deploy the application
   destination:
     # cluster API URL
