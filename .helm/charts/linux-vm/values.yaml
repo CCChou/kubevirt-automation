@@ -1,0 +1,12 @@
+cpu: 1
+memory: 2Gi
+
+networks:
+  - name: default
+    type: masquerade
+
+# TODO
+# 1. Add cloud init script
+# 2. Network should have default pod network
+# 3. Disk as parameter and need support datavolume from snapshot
+# 4. Support windows in the same helm
