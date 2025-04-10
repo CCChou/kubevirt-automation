@@ -4,11 +4,3 @@ kind: Kustomization
 
 components:
   - ../../templates/vapp
-
-helmCharts:
-  - name: linux-vm
-    releaseName: myfedora
-    namespace: test03
-    valuesInline:
-      fedora01:
-        cpu: 2
