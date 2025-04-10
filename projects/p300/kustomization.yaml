@@ -10,4 +10,5 @@ helmGlobals:
 
 helmCharts:
   - name: linux-vm
+    releaseName: myfedora
     namespace: test03

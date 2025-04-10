@@ -6,4 +6,5 @@ helmGlobals:
 
 helmCharts:
   - name: linux-vm
+    releaseName: myfedora
     valuesFile: values.yaml
