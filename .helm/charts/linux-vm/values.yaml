@@ -1,9 +1,35 @@
-cpu: 1
-memory: 2Gi
+vms:
+  - name: myfedora
+    cpu: 1
+    memory: 2Gi
 
-networks:
-  - name: default
-    type: masquerade
+    # type could be masquerade (Pod Networking) or bridge (other CNI or OVN-K overlay)
+    networks:
+      - name: default
+        type: masquerade
+
+      - name: sa-manager
+        type: bridge
+  
+      - name: sa-production
+        type: bridge
+
+    disks:
+      - name: rootdisk
+        # support option: pvc, image, blank
+        type: image
+        size: 30Gi
+        datasourceName: fedora
+        datasourceNamespace: openshift-virtualization-os-images
+
+      - name: secondary
+        type: blank
+        size: 30Gi
+        storageclassName: ocs-external-storagecluster-ceph-rbd
+
+nads:
+  - name: sa-manager
+  - name: sa-production
 
 # TODO
 # 1. Add cloud init script

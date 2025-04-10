@@ -1,23 +1,46 @@
+{{- range .Values.vms }}
+---
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  name: {{ .Release.Name }}
-  namespace: {{ .Release.Namespace }}
+  name: {{ .name }}
+  namespace: {{ $.Release.Namespace }}
 spec:
   dataVolumeTemplates:
+    {{- range .disks }}
     - apiVersion: cdi.kubevirt.io/v1beta1
       kind: DataVolume
       metadata:
-        name: {{ .Release.Name }}
+        name: {{ .name }}
       spec:
+        {{- if eq .type "image" }}
         sourceRef:
           kind: DataSource
-          name: fedora
-          namespace: openshift-virtualization-os-images
+          name: {{ .datasourceName }}
+          namespace: {{ .datasourceNamespace }}
         storage:
           resources:
             requests:
-              storage: 30Gi
+              storage: {{ .size }}
+        {{- else if eq .type "pvc" }}
+        source:
+          pvc:
+            name: {{ .datasourceName }}
+            namespace: {{ .datasourceNamespace }}
+        storage:
+          resources:
+            requests:
+              storage: {{ .size }}
+        {{- else if eq .type "blank" }}
+        source:
+          blank: {}
+        storage:
+          resources:
+            requests:
+               storage: {{ .size }}
+          storageClassName: {{ .storageclassName }}
+        {{- end }}
+    {{- end }}
   runStrategy: RerunOnFailure
   template:
     spec:
@@ -25,30 +48,32 @@ spec:
       domain:
         cpu:
           cores: 1
-          sockets: {{ .Values.cpu }}
+          sockets: {{ .cpu }}
           threads: 1
         devices:
           disks:
+            {{- range .disks }}
             - disk:
                 bus: virtio
-              name: rootdisk
+              name: {{ .name }}
+            {{- end }}
             - disk:
                 bus: virtio
               name: cloudinitdisk
           interfaces:
-          {{- range .Values.networks }}
+          {{- range .networks }}
             - name: {{ .name }}
+              model: virtio
               {{- if eq .type "bridge" }}
               bridge: {}
               {{- else }}
               masquerade: {}
               {{- end }}
-              model: virtio
           {{- end }}
         memory:
-          guest: {{ .Values.memory }}
+          guest: {{ .memory }}
       networks:
-      {{- range .Values.networks }}
+      {{- range .networks }}
         {{- if eq .type "bridge" }}
         - multus:
             networkName: {{ .name }}
@@ -57,12 +82,19 @@ spec:
         - name: {{ .name }}
           pod: {}
         {{- end }}
-          model: virtio
       {{- end }}
       volumes:
+        {{- range .disks }}
+        {{- if eq .name "rootdisk" }}
         - dataVolume:
-            name: {{ .Release.Name }}
+            name: {{ .name }}
           name: rootdisk
+        {{- else }}
+        - dataVolume:
+            name: {{ .name }}
+          name: {{ .name }}
+        {{- end }}
+        {{- end }}
         - cloudInitNoCloud:
             userData: |-
               #cloud-config
@@ -70,3 +102,4 @@ spec:
               password: redhat
               chpasswd: { expire: False }
           name: cloudinitdisk
+{{- end }}
