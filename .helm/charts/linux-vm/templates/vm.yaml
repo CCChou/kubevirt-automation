@@ -1,13 +1,13 @@
-{{- range .Values.vms }}
+{{- range $key,$val := .Values.vms }}
 ---
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  name: {{ .name }}
+  name: {{ $key }}
   namespace: {{ $.Release.Namespace }}
 spec:
   dataVolumeTemplates:
-    {{- range .disks }}
+    {{- range $val.disks }}
     - apiVersion: cdi.kubevirt.io/v1beta1
       kind: DataVolume
       metadata:
@@ -48,11 +48,11 @@ spec:
       domain:
         cpu:
           cores: 1
-          sockets: {{ .cpu }}
+          sockets: {{ $val.cpu }}
           threads: 1
         devices:
           disks:
-            {{- range .disks }}
+            {{- range $val.disks }}
             - disk:
                 bus: virtio
               name: {{ .name }}
@@ -61,7 +61,7 @@ spec:
                 bus: virtio
               name: cloudinitdisk
           interfaces:
-          {{- range .networks }}
+          {{- range $val.networks }}
             - name: {{ .name }}
               model: virtio
               {{- if eq .type "bridge" }}
@@ -71,9 +71,9 @@ spec:
               {{- end }}
           {{- end }}
         memory:
-          guest: {{ .memory }}
+          guest: {{ $val.memory }}
       networks:
-      {{- range .networks }}
+      {{- range $val.networks }}
         {{- if eq .type "bridge" }}
         - multus:
             networkName: {{ .name }}
@@ -84,7 +84,7 @@ spec:
         {{- end }}
       {{- end }}
       volumes:
-        {{- range .disks }}
+        {{- range $val.disks }}
         {{- if eq .name "rootdisk" }}
         - dataVolume:
             name: {{ .name }}
