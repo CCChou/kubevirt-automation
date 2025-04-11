@@ -10,3 +10,6 @@ helmCharts:
     releaseName: myfedora
     namespace: p300
     valuesFile: ../../templates/vapp/values.yaml
+    valuesInline:
+      fedora01:
+        cpu: 2
