@@ -15,7 +15,7 @@ vms:
         size: 100Gi
         datasourceName: restore-a85adff9-b63e-428e-bb07-66008a3bd7ae-rootdisk
         datasourceNamespace: vapp-temp
-  fedora01:
+  kvm-01:
     cpu: 1
     memory: 2Gi
     networks:
@@ -31,7 +31,7 @@ vms:
         size: 120Gi
         datasourceName: restore-8e72f845-bc10-4c98-803c-04bd633ff701-rocky9-bootdisk
         datasourceNamespace: vapp-temp
-  fedora02:
+  kvm-02:
     cpu: 1
     memory: 2Gi
     networks:

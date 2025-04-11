@@ -20,9 +20,9 @@ helmCharts:
       vms:
         dc:
           cpu: 2
-        fedora01:
+        kvm-01:
           cpu: 2
-        fedora02:
+        kvm-02:
           cpu: 2
 
 patches:
