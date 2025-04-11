@@ -8,6 +8,7 @@ resources:
 helmCharts:
   - name: linux-vm
     releaseName: myfedora
+    namespace: test04
     valuesMerge: replace
     valuesInline:
       fedora01:
