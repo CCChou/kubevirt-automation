@@ -19,6 +19,8 @@ helmCharts:
       vms:
         fedora01:
           cpu: 2
+        fedora02:
+          cpu: 2
 
 patches:
   - patch: |-

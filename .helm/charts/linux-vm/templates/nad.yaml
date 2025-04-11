@@ -3,7 +3,7 @@
 apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata:
-  name: {{ .name }}
+  name: {{ .name }}-{{ $.Release.Namespace }}
   namespace: {{ $.Release.Namespace }}
 spec:
   config: |-
@@ -11,7 +11,7 @@ spec:
         "cniVersion": "0.3.1",
         "name": "{{ .name }}",
         "type": "ovn-k8s-cni-overlay",
-        "netAttachDefName": "{{ $.Release.Namespace }}/{{ .name }}",
+        "netAttachDefName": "{{ $.Release.Namespace }}/{{ .name }}-{{ $.Release.Namespace }}",
         "topology": "layer2"
     }
 {{- end }}

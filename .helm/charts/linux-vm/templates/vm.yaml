@@ -117,17 +117,19 @@ spec:
             {{- end }}
           interfaces:
           {{- range $val.networks }}
-            - name: {{ .name }}
-              {{- if eq .type "bridge" }}
+            {{- if eq .type "bridge" }}
+            - name: {{ .name }}-{{ $.Release.Namespace }}
               model: virtio
               bridge: {}
-              {{- else if eq .os "windows" }}
+            {{- else if eq .os "windows" }}
+            - name: {{ .name }}
               model: e1000e
               masquerade: {}
-              {{- else }}
+            {{- else }}
+            - name: {{ .name }}
               model: virtio
               masquerade: {}
-              {{- end }}
+            {{- end }}
           {{- end }}
         memory:
           guest: {{ $val.memory }}
@@ -135,7 +137,7 @@ spec:
       {{- range $val.networks }}
         {{- if eq .type "bridge" }}
         - multus:
-            networkName: {{ .name }}
+            networkName: {{ .name }}-{{ $.Release.Namespace }}
           name: {{ .name }}
         {{- else }}
         - name: {{ .name }}
