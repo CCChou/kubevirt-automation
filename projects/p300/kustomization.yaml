@@ -2,5 +2,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-components:
+resources:
   - ../../templates/vapp
+
+helmCharts:
+  - name: linux-vm
+    releaseName: myfedora
+    valuesMerge: replace
+    valuesInline:
+      fedora01:
+        cpu: 2
