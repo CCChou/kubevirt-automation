@@ -148,7 +148,7 @@ spec:
         {{- range $val.disks }}
         {{- if eq .name "rootdisk" }}
         - dataVolume:
-            name: {{ .name }}
+            name: {{ $key }}-{{ .name }}
           name: rootdisk
         {{- else }}
         - dataVolume:
