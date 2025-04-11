@@ -11,5 +11,6 @@ helmCharts:
     namespace: p300
     valuesFile: ../../templates/vapp/values.yaml
     valuesInline:
-      fedora01:
-        cpu: 2
+      vms:
+        fedora01:
+          cpu: 2
