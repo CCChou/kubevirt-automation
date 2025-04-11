@@ -1,5 +1,6 @@
 vms:
   dc:
+    os: windows
     cpu: 1
     memory: 4Gi
     networks:
@@ -16,6 +17,7 @@ vms:
         datasourceName: restore-a85adff9-b63e-428e-bb07-66008a3bd7ae-rootdisk
         datasourceNamespace: vapp-temp
   kvm-01:
+    os: linux
     cpu: 1
     memory: 2Gi
     networks:
@@ -32,6 +34,7 @@ vms:
         datasourceName: restore-8e72f845-bc10-4c98-803c-04bd633ff701-rocky9-bootdisk
         datasourceNamespace: vapp-temp
   kvm-02:
+    os: linux
     cpu: 1
     memory: 2Gi
     networks:
@@ -45,7 +48,7 @@ vms:
       - name: rootdisk
         type: pvc
         size: 120Gi
-        datasourceName: restore-8e72f845-bc10-4c98-803c-04bd633ff701-rocky9-bootdisk
+        datasourceName: restore-ae26410e-b6d2-4532-82a5-6cb1891f3ccd-rocky9-bootdisk
         datasourceNamespace: vapp-temp
 nads:
   - name: sa-manager
