@@ -118,7 +118,7 @@ spec:
           interfaces:
           {{- range $val.networks }}
             {{- if eq .type "bridge" }}
-            - name: {{ .name }}-{{ $.Release.Namespace }}
+            - name: {{ .name }}
               model: virtio
               bridge: {}
             {{- else if eq .os "windows" }}
