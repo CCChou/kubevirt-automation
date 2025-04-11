@@ -11,8 +11,5 @@ helmGlobals:
 helmCharts:
   - name: linux-vm
     releaseName: myfedora
-    namespace: test04
-    valuesMerge: replace
-    valuesInline:
-      fedora01:
-        cpu: 2
+    namespace: p300
+    valuesFile: ../../templates/vapp/values.yaml
