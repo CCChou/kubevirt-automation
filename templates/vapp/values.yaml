@@ -1,20 +1,20 @@
 vms:
-  # dc:
-  #   cpu: 1
-  #   memory: 4Gi
-  #   networks:
-  #     - name: default
-  #       type: masquerade
-  #     - name: sa-manager
-  #       type: bridge
-  #     - name: sa-production
-  #       type: bridge
-  #   disks:
-  #     - name: rootdisk
-  #       type: image
-  #       size: 30Gi
-  #       datasourceName: fedora
-  #       datasourceNamespace: openshift-virtualization-os-images
+  dc:
+    cpu: 1
+    memory: 4Gi
+    networks:
+      - name: default
+        type: masquerade
+      - name: sa-manager
+        type: bridge
+      - name: sa-production
+        type: bridge
+    disks:
+      - name: rootdisk
+        type: pvc
+        size: 100Gi
+        datasourceName: boot-disk-clone-from-dc
+        datasourceNamespace: vapp-temp
   fedora01:
     cpu: 1
     memory: 2Gi
@@ -27,10 +27,10 @@ vms:
         type: bridge
     disks:
       - name: rootdisk
-        type: image
-        size: 30Gi
-        datasourceName: fedora
-        datasourceNamespace: openshift-virtualization-os-images
+        type: pvc
+        size: 120Gi
+        datasourceName: restore-8e72f845-bc10-4c98-803c-04bd633ff701-rocky9-bootdisk
+        datasourceNamespace: vapp-temp
   fedora02:
     cpu: 1
     memory: 2Gi
@@ -43,10 +43,10 @@ vms:
         type: bridge
     disks:
       - name: rootdisk
-        type: image
-        size: 30Gi
-        datasourceName: fedora
-        datasourceNamespace: openshift-virtualization-os-images
+        type: pvc
+        size: 120Gi
+        datasourceName: restore-8e72f845-bc10-4c98-803c-04bd633ff701-rocky9-bootdisk
+        datasourceNamespace: vapp-temp
 nads:
   - name: sa-manager
   - name: sa-production

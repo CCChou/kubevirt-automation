@@ -15,6 +15,7 @@ helmCharts:
     releaseName: myfedora
     namespace: p300
     valuesFile: ../../templates/vapp/values.yaml
+    # Customize
     valuesInline:
       vms:
         fedora01:
@@ -23,9 +24,13 @@ helmCharts:
           cpu: 2
 
 patches:
+  # Customize
   - patch: |-
       - op: replace
         path: /subjects/0/namespace
         value: 'p300'
     target:
       kind: RoleBinding
+
+# Customize
+namespace: p300
