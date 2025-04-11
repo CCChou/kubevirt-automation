@@ -1,5 +1,6 @@
 vms:
   fedora01:
+    os: linux
     cpu: 1
     memory: 2Gi
     networks:
@@ -16,6 +17,24 @@ vms:
         datasourceName: fedora
         datasourceNamespace: openshift-virtualization-os-images
   fedora02:
+    os: linux
+    cpu: 1
+    memory: 2Gi
+    networks:
+      - name: default
+        type: masquerade
+      - name: sa-manager
+        type: bridge
+      - name: sa-production
+        type: bridge
+    disks:
+      - name: rootdisk
+        type: image
+        size: 30Gi
+        datasourceName: fedora
+        datasourceNamespace: openshift-virtualization-os-images
+  dc:
+    os: windows
     cpu: 1
     memory: 2Gi
     networks:
@@ -34,9 +53,3 @@ vms:
 nads:
   - name: sa-manager
   - name: sa-production
-
-# TODO
-# 1. Add cloud init script
-# 2. Network should have default pod network
-# 3. Disk as parameter and need support datavolume from snapshot
-# 4. Support windows in the same helm

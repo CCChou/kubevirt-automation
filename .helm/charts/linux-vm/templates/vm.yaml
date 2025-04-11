@@ -46,27 +46,86 @@ spec:
     spec:
       architecture: amd64
       domain:
+        {{- if eq $val.os "windows" }}
+        clock:
+          timer:
+            hpet:
+              present: false
+            hyperv: {}
+            pit:
+              tickPolicy: delay
+            rtc:
+              tickPolicy: catchup
+          utc: {}
+        features:
+          acpi: {}
+          apic: {}
+          hyperv:
+            reenlightenment: {}
+            ipi: {}
+            synic: {}
+            synictimer:
+              direct: {}
+            spinlocks:
+              spinlocks: 8191
+            reset: {}
+            relaxed: {}
+            vpindex: {}
+            runtime: {}
+            tlbflush: {}
+            frequencies: {}
+            vapic: {}
+          smm: {}
+        firmware:
+          bootloader:
+            efi:
+              persistent: true
+              secureBoot: true
+        {{- end }}
         cpu:
           cores: 1
           sockets: {{ $val.cpu }}
           threads: 1
         devices:
+          {{- if eq $val.os "windows" }}
+          logSerialConsole: false
+          tpm:
+            persistent: true
+          inputs:
+            - bus: usb
+              name: tablet
+              type: tablet
+          {{- end }}
           disks:
             {{- range $val.disks }}
             - disk:
+                {{- if eq $val.os "windows" }}
+                bus: sata
+                {{- else if eq $val.os "linux" }}
                 bus: virtio
+                {{- end }}
               name: {{ .name }}
             {{- end }}
+            {{- if eq $val.os "windows" }}
+            - cdrom:
+                bus: sata
+              name: windows-drivers-disk
+            {{- else if eq $val.os "linux" }}
             - disk:
                 bus: virtio
               name: cloudinitdisk
+            {{- end }}
           interfaces:
           {{- range $val.networks }}
             - name: {{ .name }}
-              model: virtio
               {{- if eq .type "bridge" }}
+              model: virtio
               bridge: {}
+              {{- else if eq .os "windows" }}
+              model: e1000e
+              masquerade: {}
               {{- else }}
+              model: virtio
               masquerade: {}
               {{- end }}
           {{- end }}
@@ -95,11 +154,17 @@ spec:
           name: {{ .name }}
         {{- end }}
         {{- end }}
+        {{- if eq $val.os "windows" }}
+        - containerDisk:
+            image: 'registry.redhat.io/container-native-virtualization/virtio-win-rhel9@sha256:07dbdd6c8893619bbda5fd6a9224e0a50555c126fae3d82c83041ad146cecf0b'
+          name: windows-drivers-disk
+        {{- else if eq $val.os "linux" }}
         - cloudInitNoCloud:
             userData: |-
               #cloud-config
               user: fedora
-              password: redhat
+              password: redhat1!
               chpasswd: { expire: False }
           name: cloudinitdisk
+        {{- end }}
 {{- end }}
