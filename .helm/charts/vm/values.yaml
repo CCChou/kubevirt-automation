@@ -16,6 +16,11 @@
 #         size: 30Gi
 #         datasourceName: fedora
 #         datasourceNamespace: openshift-virtualization-os-images
+#     cloud-init: |-
+#       #cloud-config
+#       user: fedora
+#       password: redhat1!
+#       chpasswd: { expire: False }
 # nads:
 #   - name: sa-manager
 #   - name: sa-production
