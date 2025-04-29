@@ -81,6 +81,14 @@ spec:
             efi:
               persistent: true
               secureBoot: true
+        {{- else if eq $val.os "linux" }}
+        features:
+          acpi: {}
+          smm:
+            enabled: true
+        firmware:
+          bootloader:
+            efi: {}
         {{- end }}
         cpu:
           cores: 1
