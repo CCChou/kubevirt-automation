@@ -160,10 +160,10 @@ spec:
         - containerDisk:
             image: 'registry.redhat.io/container-native-virtualization/virtio-win-rhel9@sha256:07dbdd6c8893619bbda5fd6a9224e0a50555c126fae3d82c83041ad146cecf0b'
           name: windows-drivers-disk
-        {{- else if and (eq $val.os "linux") (not (empty $val.cloud-init)) }}
+        {{- else if and (eq $val.os "linux") (not (empty $val.cloudinit)) }}
         - cloudInitNoCloud:
             userData: |-
-              {{ $val.cloud-init }}
+              {{ $val.cloudinit }}
           name: cloudinitdisk
         {{- end }}
 {{- end }}
