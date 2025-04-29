@@ -110,7 +110,7 @@ spec:
             - cdrom:
                 bus: sata
               name: windows-drivers-disk
-            {{- else if eq $val.os "linux" }}
+            {{- else if and (eq $val.os "linux") (not (empty $val.cloudinit)) }}
             - disk:
                 bus: virtio
               name: cloudinitdisk
